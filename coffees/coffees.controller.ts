@@ -17,7 +17,7 @@ import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 
 @Controller('coffees')
 export class CoffeesController {
-  constructor(private readonly coffeesService: CoffeesService) {};
+  constructor(private readonly coffeesService: CoffeesService) {}
 
   @Get()
   findAll(@Query() paginationQuery) {
@@ -28,19 +28,24 @@ export class CoffeesController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
+    console.log(typeof id);
     return this.coffeesService.findOne(id);
     // return `This action returns #${id} coffee`;
   }
 
   @Post()
-  create(@Body('name') CreateCoffeeDto: CreateCoffeeDto) {
-    console.log({CreateCoffeeDto});
-    return this.coffeesService.create(CreateCoffeeDto);
+  create(@Body() createCoffeeDto: CreateCoffeeDto) {
+    console.log({
+      CreateCoffeeDto,
+      class: createCoffeeDto instanceof CreateCoffeeDto,
+    });
+    return this.coffeesService.create(createCoffeeDto);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Param() UpdateCoffeeDto: UpdateCoffeeDto) {
-    return this.coffeesService.update(id, UpdateCoffeeDto);
+  update(@Param('id') id: string, @Body() updateCoffeeDto: UpdateCoffeeDto) {
+    console.log({ id });
+    return this.coffeesService.update(id, updateCoffeeDto);
   }
 
   @Delete(':id')
